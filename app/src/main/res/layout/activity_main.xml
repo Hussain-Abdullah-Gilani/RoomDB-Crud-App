@@ -7,89 +7,81 @@
             name="myViewModel"
             type="com.example.roomdbapp.UserViewModel" />
     </data>
-
-
-
-
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_margin="15dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-
         android:orientation="vertical"
         tools:context=".MainActivity">
-
         <SearchView
             android:id="@+id/searchbar"
             android:layout_width="match_parent"
             android:layout_height="55dp"
-android:layout_marginLeft="15dp"
             android:background="@drawable/search_bg"
             android:backgroundTint="@color/teal_200"
             android:iconifiedByDefault="false"
-
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
             app:queryBackground="@drawable/search_bg"
             app:submitBackground="@drawable/search_bg" />
-
         <EditText
             android:id="@+id/name_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="15dp"
-            android:layout_marginBottom="5dp"
+            android:layout_marginTop="70dp"
             android:ems="10"
             android:hint="Enter Name"
             android:inputType="textPersonName"
             android:text="@={myViewModel.inputName}"
-            android:textStyle="bold" />
-
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
         <EditText
             android:id="@+id/email_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="15dp"
-            android:layout_marginTop="5dp"
-            android:layout_marginBottom="5dp"
+            android:layout_marginTop="140dp"
             android:ems="10"
             android:hint="Enter Email"
             android:inputType="textPersonName"
             android:text="@={myViewModel.inputEmail}"
-            android:textStyle="bold" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+        <Button
+            android:id="@+id/save_or_update_button"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <Button
-                android:id="@+id/save_or_update_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:onClick="@{()->myViewModel.saveOrUpdate()}"
-                android:text="@={myViewModel.saveOrUpdateButtonText}"
-                android:textSize="18sp"
-                android:textStyle="bold"
-                tools:ignore="UsingOnClickInXml" />
-
-            <Button
-                android:id="@+id/clear_all_or_delete_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="5dp"
-                android:layout_weight="1"
-                android:onClick="@{()->myViewModel.clearAllOrDelete()}"
-                android:text="@={myViewModel.clearAllOrDeleteButtonText}"
-                android:textSize="18sp"
-                android:textStyle="bold" />
-        </LinearLayout>
-
+            android:layout_marginLeft="40dp"
+            android:layout_marginTop="200dp"
+            android:onClick="@{()->myViewModel.saveOrUpdate()}"
+            android:text="@={myViewModel.saveOrUpdateButtonText}"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:ignore="UsingOnClickInXml" />
+        <Button
+            android:id="@+id/clear_all_or_delete_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginTop="200dp"
+            android:layout_marginRight="40dp"
+            android:onClick="@{()->myViewModel.clearAllOrDelete()}"
+            android:text="@={myViewModel.clearAllOrDeleteButtonText}"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/subscriber_recyclerView"
+            android:id="@+id/user_recyclerView"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="5dp"
-
-            />
-    </LinearLayout>
+            android:layout_height="0dp"
+            android:layout_marginTop="280dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+          />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
