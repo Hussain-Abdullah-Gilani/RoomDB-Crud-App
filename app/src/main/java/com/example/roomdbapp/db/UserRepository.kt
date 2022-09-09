@@ -1,7 +1,38 @@
 package com.example.roomdbapp.db
+import android.util.Log
+import com.example.roomdbapp.api.Api
+import com.example.roomdbapp.api.RetrofitService
+import com.example.roomdbapp.api.RetrofitService.Companion.retrofitService
 import kotlinx.coroutines.flow.Flow
-class UserRepository(private val dao: UserDao) {
-    val users = dao.getAll()
+import org.w3c.dom.Entity
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import retrofit2.Retrofit
+import retrofit2.converter.moshi.MoshiConverterFactory
+
+class UserRepository(private val retro: RetrofitService,private val dao: UserDao)
+{
+
+    //API
+    suspend fun getAPIUsers(): Response<List<UserEntity>>? {
+       return retrofitService?.getUsers()
+    }
+    suspend fun insertAPIUser(user: UserEntity): Response<List<UserEntity>>? {
+        return retrofitService?.createUsers()
+    }
+
+
+
+    //DATABASE
+    suspend fun getAllDbUser(): Flow<List<UserEntity>> {
+        return dao.getAll()
+    }
+    suspend fun InsertAllApiUserintoDB(user: List<UserEntity>?){
+        return dao.insertApi(user)
+    }
+
+
     suspend fun insert(user: UserEntity): Long {
         return dao.insert(user)
     }

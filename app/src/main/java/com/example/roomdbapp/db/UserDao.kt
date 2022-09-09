@@ -6,6 +6,8 @@ import kotlinx.coroutines.flow.Flow
 interface UserDao {
     @Insert
     suspend fun insert(user: UserEntity) : Long
+    @Transaction @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insertApi(user: List<UserEntity>?)
     @Update
     suspend fun update(user: UserEntity) : Int
     @Query("DELETE FROM user_table WHERE user_name= :username")

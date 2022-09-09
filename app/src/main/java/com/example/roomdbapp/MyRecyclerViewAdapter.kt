@@ -1,5 +1,6 @@
 package com.example.roomdbapp
 import android.app.LauncherActivity
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
@@ -23,9 +24,12 @@ class MyRecyclerViewAdapter(private val clickListener: (UserEntity) -> Unit) :
         holder.bind(usersList[position], clickListener)
     }
     fun setList(user: List<UserEntity>) {
+        Log.d("yello", user.toString())
         usersList.clear()
         usersList.addAll(user)
+        notifyDataSetChanged()
     }
+
 }
 class MyViewHolder(val binding: RecyclerItemBinding ) : RecyclerView.ViewHolder(binding.root)
 {

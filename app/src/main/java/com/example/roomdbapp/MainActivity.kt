@@ -3,37 +3,57 @@ import android.annotation.SuppressLint
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import android.view.Menu
+import android.view.View
 import android.widget.SearchView
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
+import com.example.roomdbapp.api.RetrofitService
 import com.example.roomdbapp.databinding.ActivityMainBinding
+import com.example.roomdbapp.db.UserDao
 import com.example.roomdbapp.db.UserDatabase
 import com.example.roomdbapp.db.UserEntity
 import com.example.roomdbapp.db.UserRepository
+
 class MainActivity : AppCompatActivity() {
+
     private lateinit var binding: ActivityMainBinding
     private lateinit var userviewmodel:UserViewModel
-    private lateinit var adapter: MyRecyclerViewAdapter
-    private lateinit var searchbar: SearchView
+    private var adapter: MyRecyclerViewAdapter? =null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
         val dao = UserDatabase.getInstance(application).userDao
-        val repository = UserRepository(dao)
-        val factory = UserViewModelFactory(repository)
-        userviewmodel = ViewModelProvider(this, factory).get(UserViewModel::class.java)
-        binding.myViewModel = userviewmodel
+
         binding.lifecycleOwner = this
 
+        val retrofitService= RetrofitService.getInstance()
+        val repository = UserRepository(retrofitService,dao)
+        userviewmodel = ViewModelProvider(this, UserViewModelFactory(repository))[UserViewModel::class.java]
+        binding.myViewModel = userviewmodel
+
+        userviewmodel.users.observe(this)
+        {
+            Log.d("TAG", it.toString())
+
+            adapter?.setList(it)
+        }
+        userviewmodel.errormsg.observe(this)
+        {
+            Toast.makeText(this,"Yo no go",Toast.LENGTH_SHORT).show()
+        }
+
+        userviewmodel.getUsers()
 
 
 
 
+
+        //getAllApi()
         userviewmodel.message.observe(this, Observer {
             it.getContentIfNotHandled()?.let {
                 Toast.makeText(this, it, Toast.LENGTH_LONG).show()
@@ -63,10 +83,13 @@ class MainActivity : AppCompatActivity() {
         binding.userRecyclerView.adapter = adapter
         displayuserList()
     }
+
+
+
     private fun displayuserList() {
         userviewmodel.getSavedUser().observe(this, Observer {
-            adapter.setList(it)
-            adapter.notifyDataSetChanged()
+            adapter?.setList(it)
+            adapter?.notifyDataSetChanged()
         })
     }
     private fun listItemClicked(user: UserEntity) {
@@ -78,9 +101,17 @@ class MainActivity : AppCompatActivity() {
         Log.d("TAG",searchQuery)
         userviewmodel.searchDatabase(searchQuery).observe(this) { list ->
             list.let {
-                adapter.setList(it)
-                adapter.notifyDataSetChanged()
+                adapter?.setList(it)
+                adapter?.notifyDataSetChanged()
             }
         }
     }
+    fun getAllApi()
+    {
+
+        //userviewmodel.getdata()
+//        api=userviewmodel.returndata()
+//        userviewmodel.insertUsersApi(api)
+    }
+
 }
